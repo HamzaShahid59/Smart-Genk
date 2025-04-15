@@ -170,7 +170,7 @@ const ChatBot = () => {
               fontWeight: 600,
               letterSpacing: '-0.5px'
             }}>
-              Slim Genk
+              Slim Genk AI
               <Typography component="span" sx={{
                 ml: 1.5,
                 color: '#94a3b8',
