@@ -85,7 +85,7 @@ const ChatBot = () => {
     };
     setChatHistory(prev => [...prev, newHumanMessage]);
   
-    const newWs = new WebSocket('ws://localhost:8000/ws/chat');
+    const newWs = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
   
     newWs.onopen = () => {
       newWs.send(JSON.stringify({
