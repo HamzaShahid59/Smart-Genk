@@ -47,7 +47,11 @@ const markdownStyles = {
 const ChatBot = () => {
   const [queryText, setQueryText] = useState('');
   const [loadingQuery, setLoadingQuery] = useState(false);
-  const [chatHistory, setChatHistory] = useState([]);
+  const [chatHistory, setChatHistory] = useState([{
+    content: "Hallo! Ik ben GenkAI en ik help je graag met vragen over de gemeente Genk. Wat kan ik vandaag voor je doen?",
+    type: 'ai',
+    timestamp: new Date()
+  }]);
   const [currentAnswer, setCurrentAnswer] = useState('');
   const [ws, setWs] = useState(null);
   const messagesEndRef = useRef(null);
