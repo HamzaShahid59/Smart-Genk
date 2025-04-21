@@ -77,10 +77,10 @@ const ChatBot = () => {
       alert('Please enter a query!');
       return;
     }
-  
+
     setLoadingQuery(true);
     setCurrentAnswer('');
-  
+
     // Add user message immediately to chat history
     const newHumanMessage = {
       content: queryText,
@@ -88,23 +88,23 @@ const ChatBot = () => {
       timestamp: new Date()
     };
     setChatHistory(prev => [...prev, newHumanMessage]);
-  
+
     const newWs = new WebSocket(import.meta.env.VITE_WEBSOCKET_URL);
-  
+
     newWs.onopen = () => {
       newWs.send(JSON.stringify({
         message: queryText,
         history: chatHistory
       }));
     };
-  
+
     newWs.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      
+
       if (data.type === 'chunk') {
         setCurrentAnswer(prev => prev + data.content);
       }
-  
+
       if (data.type === 'complete') {
         // Add only the AI response to chat history
         const newAiMessage = {
@@ -112,27 +112,27 @@ const ChatBot = () => {
           type: 'ai',
           timestamp: new Date()
         };
-        
+
         setChatHistory(prev => [...prev, newAiMessage]);
         setQueryText('');
         setCurrentAnswer('');
         setLoadingQuery(false);
         newWs.close();
       }
-  
+
       if (data.error) {
         alert(`Error: ${data.error}`);
         setLoadingQuery(false);
         newWs.close();
       }
     };
-  
+
     newWs.onerror = (error) => {
       console.error('WebSocket error:', error);
       setLoadingQuery(false);
       newWs.close();
     };
-  
+
     setWs(newWs);
   };
 
@@ -140,7 +140,7 @@ const ChatBot = () => {
     <Box sx={{
       display: 'flex',
       height: '100vh',
-      background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+      background: 'linear-gradient(135deg,rgb(255, 255, 255) 0%,rgb(255, 255, 255) 100%)',
       alignItems: 'stretch',
       justifyContent: 'stretch'
     }}>
@@ -156,8 +156,8 @@ const ChatBot = () => {
         <Box sx={{
           py: 2,
           px: 4,
-          borderBottom: '1px solid #334155',
-          background: 'rgba(30, 41, 59, 0.7)',
+          borderBottom: '1px solidrgb(255, 255, 255)',
+          background: 'rgb(255, 255, 255)',
           backdropFilter: 'blur(10px)'
         }}>
           <Box sx={{
@@ -168,21 +168,21 @@ const ChatBot = () => {
             gap: 2
           }}>
             <img src={Genklogo} alt='Genk logo'
-            height={41.2} width={100} />
+              height={41.2} width={100} />
             <Typography variant="h6" sx={{
-              color: '#e2e8f0',
+              color: '#224455',
               fontWeight: 600,
               letterSpacing: '-0.5px'
             }}>
-              Slim Genk AI
-              <Typography component="span" sx={{
+              Genk Buddy
+              {/* <Typography component="span" sx={{
                 ml: 1.5,
                 color: '#94a3b8',
                 fontSize: '0.875rem',
                 fontWeight: 400
               }}>
                 Idereen genk
-              </Typography>
+              </Typography> */}
             </Typography>
           </Box>
         </Box>
@@ -191,7 +191,7 @@ const ChatBot = () => {
           flex: 1,
           overflowY: 'auto',
           p: 3,
-          background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)'
+          background: 'linear-gradient(180deg,rgb(255, 255, 255) 0%,rgb(255, 255, 255) 100%)'
         }}>
           {chatHistory.map((msg, index) => (
             <Box key={index} sx={{
@@ -206,10 +206,11 @@ const ChatBot = () => {
                 flexDirection: msg.type === 'human' ? 'row-reverse' : 'row'
               }}>
                 <Avatar sx={{
-                  bgcolor: msg.type === 'human' ? '#6366f1' : '#10b981',
+                  bgcolor: msg.type === 'human' ? '#5d8fa5' : '#224455',
                   width: 36,
                   height: 36,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                  boxShadow: '0 2px 8px rgb(255, 255, 255)',
+                  color: 'white',
                 }}>
                   {msg.type === 'human' ? (
                     <PersonOutlineOutlinedIcon fontSize="small" />
@@ -221,10 +222,10 @@ const ChatBot = () => {
                   p: 2,
                   maxWidth: 600,
                   borderRadius: 4,
-                  bgcolor: msg.type === 'human' ? '#6366f1' : '#334155',
+                  bgcolor: msg.type === 'human' ? '#5d8fa5' : '#224455',
                   color: '#f8fafc',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                  border: msg.type === 'human' ? 'none' : '1px solid #3f4a5f',
+                  boxShadow: '0 4px 12px rgb(255, 255, 255)',
+                  border: msg.type === 'human' ? 'none' : '1px solidrgb(255, 255, 255)',
                   overflowX: 'auto',
                   ...markdownStyles
                 }}>
@@ -238,7 +239,7 @@ const ChatBot = () => {
                       ),
                       code: ({ children }) => (
                         <code style={{
-                          backgroundColor: 'rgba(255,255,255,0.1)',
+                          backgroundColor: 'rgb(255, 255, 255)',
                           padding: '2px 4px',
                           borderRadius: 4,
                           fontFamily: 'monospace'
@@ -257,7 +258,7 @@ const ChatBot = () => {
           {currentAnswer && (
             <Box sx={{ display: 'flex', mb: 2, justifyContent: 'flex-start' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Avatar sx={{ bgcolor: '#4caf50', width: 32, height: 32 }}>
+                <Avatar sx={{ bgcolor: '#224455', width: 32, height: 32, color: 'white', }}>
                   <SmartToyOutlinedIcon fontSize="small" />
                 </Avatar>
                 <Paper sx={{
@@ -288,8 +289,8 @@ const ChatBot = () => {
         </Box>
 
         <Box sx={{
-          borderTop: '1px solid #334155',
-          background: 'rgba(15, 23, 42, 0.9)',
+          borderTop: '1px solidrgb(0, 0, 0)',
+          background: 'rgb(255, 255, 255)',
           backdropFilter: 'blur(8px)',
           py: 1
         }}>
@@ -313,16 +314,21 @@ const ChatBot = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 25,
-                  bgcolor: '#1e293b',
-                  '& fieldset': { borderColor: '#334155' },
-                  '&:hover fieldset': { borderColor: '#4f46e5' },
-                  '&.Mui-focused fieldset': { borderColor: '#6366f1' }
+                  bgcolor: '#fff',
+                  '& fieldset': { borderColor: '#224455' },
+                  '&:hover fieldset': { borderColor: '#224455' },
+                  '&.Mui-focused fieldset': { borderColor: '#224455' }
                 },
                 '& .MuiInputBase-input': {
-                  color: '#e2e8f0'
+                  color: '#224455',
+                  '&::placeholder': {
+                    color: '#224455',
+                    opacity: 1 // ensures custom placeholder color shows properly
+                  }
                 }
               }}
             />
+
             <Button
               variant="contained"
               onClick={handleQuery}
@@ -331,8 +337,8 @@ const ChatBot = () => {
                 minWidth: 48,
                 height: 48,
                 borderRadius: '50%',
-                bgcolor: '#6366f1',
-                '&:hover': { bgcolor: '#4f46e5' }
+                bgcolor: '#224455',
+                '&:hover': { bgcolor: '#224455' }
               }}
             >
               {loadingQuery ? (
